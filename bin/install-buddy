@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require 'yaml'
+require_relative '../lib/sysinfo'
+require_relative '../lib/distro_support'
+
+def valid_manifest?(obj)
+  obj.instance_of?(Hash) && obj["manifest"]
+end
+
+# Read command line options
+options = {
+  manifest: nil,
+}
+
+usage_str = "Usage: install-buddy -f <manifest_file>"
+OptionParser.new do |opts|
+  # Banner used to show --help or -h
+  opts.banner = usage_str
+  opts.separator "Installs packages listed in the manifest config file"
+  opts.separator "Options:"
+  opts.on("-f", "--file FILE", "Path to manifest config file") do |f|
+    options[:manifest] = f
+  end
+end.parse!
+
+# Check for valid manifest file
+raise "#{usage_str}. Type `install-buddy -h` for more details" if options[:manifest].nil?
+raise "File not found or is unreadable!" if !File.readable?(options[:manifest])
+
+manifest_yaml = YAML::load_file(options[:manifest])
+raise "Manifest file #{options[:manifest]} must be YAML with 'manifest' as root" unless valid_manifest?(manifest_yaml)
+
+# Detect distro family and pick appropriate installer
+si = Sysinfo.new
+raise "Unsupported Linux distro #{si.distro_family}" unless DistroSupport.supported?(si.distro_family)
+
+installer = DistroSupport.installer(si.distro_family)
+
+# Let the installations begin!
+manifest_yaml["manifest"].each do |pkg|
+  puts "Installing #{pkg} ..."
+  installer.install(pkg)
+end
+
+
