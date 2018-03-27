@@ -1,6 +1,6 @@
 require 'minitest/autorun'
-require_relative '../lib/distro_support'
-require_relative '../lib/installers'
+require_relative '../../lib/distro_support'
+require_relative '../../lib/installers'
 
 class  DistroSupportTest < Minitest::Test
 

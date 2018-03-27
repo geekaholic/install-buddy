@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative '../lib/sysinfo'
+require_relative '../../lib/sysinfo'
 
 class  SysinfoTest < Minitest::Test
 
