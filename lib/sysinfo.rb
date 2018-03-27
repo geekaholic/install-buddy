@@ -33,8 +33,12 @@ class Sysinfo
 
   # Return /etc/{os-release, lsb-release} or similar
   def get_linux_release_data
-    `find /etc/ -name \*-release -print -exec cat {} \\\; 2>/dev/null`.split(/\n/)
+    # Concat all file content
+    cat = ''
+    Dir.glob("/etc/**/*-release").each do |f|
+      cat << File.read(f)
+    end
+    cat.split(/\n/)
   end
+
 end
-
-
