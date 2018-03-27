@@ -31,11 +31,11 @@ raise "File not found or is unreadable!" if !File.readable?(options[:manifest])
 manifest_yaml = YAML::load_file(options[:manifest])
 raise "Manifest file #{options[:manifest]} must be YAML with 'manifest' as root" unless valid_manifest?(manifest_yaml)
 
-# Detect distro family and pick appropriate installer
+# Detect distro/distro family and pick appropriate installer
 si = Sysinfo.new
-raise "Unsupported Linux distro #{si.distro_family}" unless DistroSupport.supported?(si.distro_family)
+raise "Unsupported Linux distro family / distro #{si.distro_family}, #{si.distro}" unless DistroSupport.supported?(si.distro_family, si.distro)
 
-installer = DistroSupport.installer(si.distro_family)
+installer = DistroSupport.installer(si.distro_family, si.distro)
 
 # Let the installations begin!
 manifest_yaml["manifest"].each do |pkg|

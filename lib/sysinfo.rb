@@ -15,12 +15,14 @@ class Sysinfo
     if(os_type_arr.any?)
       # Get distro name from ID or DISTRIB_ID and convert to uppercase
       begin
-        @distro = os_type_arr.grep(/^ID=|^DISTRIB_ID=/).compact.first.split('=')[1].upcase.to_sym
+        @distro = os_type_arr.grep(/^ID=|^DISTRIB_ID=/).compact.first.split('=')[1]
+        @distro = cleanup_distro_name(@distro).upcase.to_sym
       rescue
         @distro = :UNKNOWN
       end
       begin
-        @distro_family = os_type_arr.grep(/ID_LIKE=/).first.split('=')[1].upcase.to_sym
+        @distro_family = os_type_arr.grep(/ID_LIKE=/).first.split('=')[1]
+        @distro_family = cleanup_distro_name(@distro_family).upcase.to_sym
       rescue
         # Defaults to same as @distro or UNKNOWN
         @distro_family = @distro
@@ -29,6 +31,7 @@ class Sysinfo
       @distro = :UNKNOWN
       @distro_family = :UNKNOWN
     end
+    nil
   end
 
   # Return /etc/{os-release, lsb-release} or similar
@@ -39,6 +42,11 @@ class Sysinfo
       cat << File.read(f)
     end
     cat.split(/\n/)
+  end
+
+  # cleanup and remove unwanted characters
+  def cleanup_distro_name(word)
+    word.gsub(/["']/,'')
   end
 
 end
