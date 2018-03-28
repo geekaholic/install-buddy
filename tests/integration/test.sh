@@ -16,7 +16,7 @@ fi
 trap 'echo -e "\n${RED}Integration Test Failed!${NC}\n"'\
   HUP INT QUIT PIPE TERM
 
-/app/bin/install-buddy -f /app/tests/integration/manifest.conf
+/app/bin/install-buddy -f /app/tests/integration/package-list.yml
 
 if [ $? -ne 0 ]; then
   echo -e "\n${RED}Integration Test Failed!${NC}\n"

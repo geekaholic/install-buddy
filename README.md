@@ -1,7 +1,7 @@
 # Install Buddy
 
 ## What is it?
-Simple tool to automate installing  of a list of packages(manifest), on a freshely installed Linux system.
+Simple tool to automate installing  of a list of packages, on a freshely installed Linux system.
 
 ## Why?
 From time to time, I end up reinstalling or switching Linux distos and the initial setup to get things just right by installing my favorite packages and configuring it can take some time. I wanted a tool that can kickstart a fresh installation by automating the setup process so that I can be productive right away!
@@ -16,10 +16,10 @@ From time to time, I end up reinstalling or switching Linux distos and the initi
 * Default Package Manager fully updated (e.g `apt-get update` on Debian like)
 
 ## Installation
-Clone this repo. Create and/or modify a package manifest YAML file. See [example](https://github.com/geekaholic/install-buddy/blob/master/conf/manifest-example.conf).
+Clone this repo. Create and/or modify a package-list YAML file. See [example](https://github.com/geekaholic/install-buddy/blob/master/conf/package-list-example.yml).
 
 ```yaml
-manifest:
+packages:
   - vim
   - git
   - powertop
@@ -27,13 +27,11 @@ manifest:
 ```
 
 ```bash
-Usage: sudo ./bin/install-buddy -f <manifest_file>
+Usage: sudo ./bin/install-buddy -f <package_list_file>
 ```
 
-Checkout sample packages in manifest-example.conf and try installing them.
-
 ```bash
-sudo ./bin/install-buddy -f ./conf/manifest-example.conf
+sudo ./bin/install-buddy -f ./conf/package-list-example.yml
 ```
 
 ## TODO (Coming soon!)

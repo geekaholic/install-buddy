@@ -4,32 +4,32 @@ require 'yaml'
 require_relative '../lib/sysinfo'
 require_relative '../lib/distro_support'
 
-def valid_manifest?(obj)
-  obj.instance_of?(Hash) && obj["manifest"]
+def valid_packagelist?(obj)
+  obj.instance_of?(Hash) && obj["packages"]
 end
 
 # Read command line options
 options = {
-  manifest: nil,
+  packagelist: nil,
 }
 
-usage_str = "Usage: install-buddy -f <manifest_file>"
+usage_str = "Usage: install-buddy -f <package-list_file>"
 OptionParser.new do |opts|
   # Banner used to show --help or -h
   opts.banner = usage_str
-  opts.separator "Installs packages listed in the manifest config file"
+  opts.separator "Installs packages listed in the package-list yaml file"
   opts.separator "Options:"
-  opts.on("-f", "--file FILE", "Path to manifest config file") do |f|
-    options[:manifest] = f
+  opts.on("-f", "--file FILE", "Path to package-list yaml file") do |f|
+    options[:packagelist] = f
   end
 end.parse!
 
-# Check for valid manifest file
-raise "#{usage_str}. Type `install-buddy -h` for more details" if options[:manifest].nil?
-raise "File not found or is unreadable!" if !File.readable?(options[:manifest])
+# Check for valid packagelist file
+raise "#{usage_str}. Type `install-buddy -h` for more details" if options[:packagelist].nil?
+raise "File not found or is unreadable!" if !File.readable?(options[:packagelist])
 
-manifest_yaml = YAML::load_file(options[:manifest])
-raise "Manifest file #{options[:manifest]} must be YAML with 'manifest' as root" unless valid_manifest?(manifest_yaml)
+packagelist_yaml = YAML::load_file(options[:packagelist])
+raise "Package-list file #{options[:packagelist]} must be YAML with 'packages' as root" unless valid_packagelist?(packagelist_yaml)
 
 # Detect distro/distro family and pick appropriate installer
 si = Sysinfo.new
@@ -38,7 +38,7 @@ raise "Unsupported Linux distro family / distro #{si.distro_family}, #{si.distro
 installer = DistroSupport.installer(si.distro_family, si.distro)
 
 # Let the installations begin!
-manifest_yaml["manifest"].each do |pkg|
+packagelist_yaml["packages"].each do |pkg|
   puts "Installing #{pkg} ..."
   installer.install(pkg)
 end

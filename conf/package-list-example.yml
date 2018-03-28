@@ -1,4 +1,4 @@
-manifest:
+packages:
   - vim
   - git
   - powertop
