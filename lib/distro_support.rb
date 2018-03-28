@@ -6,7 +6,8 @@ class DistroSupport
     :DEBIAN => Installer::Apt,
     :CENTOS =>  Installer::Yum,
     :FEDORA =>  Installer::Dnf,
-    :SOLUS => Installer::Eopkg
+    :SOLUS => Installer::Eopkg,
+    :ARCHLINUX => Installer::Pacman
   }.freeze
 
   def self.supported?(distro_family, distro = nil)
