@@ -1,3 +1,6 @@
 packages:
   - vim
   - git
+  - the_silver_searcher:
+    - alias: { Debian: "silversearcher-ag", Solus: "silver-searcher"}
+    - skip: [ "CentOS" ]

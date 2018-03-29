@@ -21,8 +21,8 @@ installer = DistroSupport.installer(si.distro_family, si.distro)
 
 # Let the installations begin!
 packagelist_yaml["packages"].each do |pkg|
-  puts "Installing #{pkg} ..."
   pkg_name = InstallBuddy.resolve_package(pkg, si.distro_family, si.distro)
+  puts "Installing #{pkg_name} ..."
   installer.install(pkg_name)
 end
 

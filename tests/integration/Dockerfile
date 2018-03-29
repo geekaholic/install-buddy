@@ -15,7 +15,7 @@ FROM debian:latest AS debian
 COPY --from=source app /app
 
 # Install ruby and other deps
-RUN apt-get update && apt-get install -y ruby
+RUN apt-get update && apt-get install -y apt-utils ruby
 
 WORKDIR /app
 RUN echo 'Running tests on Debian' && /app/tests/integration/test.sh
