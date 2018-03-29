@@ -1,35 +1,17 @@
 #!/usr/bin/env ruby
 require 'optparse'
 require 'yaml'
+require_relative '../lib/install_buddy'
 require_relative '../lib/sysinfo'
 require_relative '../lib/distro_support'
 
-def valid_packagelist?(obj)
-  obj.instance_of?(Hash) && obj["packages"]
-end
-
-# Read command line options
-options = {
-  packagelist: nil,
-}
-
-usage_str = "Usage: install-buddy -f <package-list_file>"
-OptionParser.new do |opts|
-  # Banner used to show --help or -h
-  opts.banner = usage_str
-  opts.separator "Installs packages listed in the package-list yaml file"
-  opts.separator "Options:"
-  opts.on("-f", "--file FILE", "Path to package-list yaml file") do |f|
-    options[:packagelist] = f
-  end
-end.parse!
-
 # Check for valid packagelist file
-raise "#{usage_str}. Type `install-buddy -h` for more details" if options[:packagelist].nil?
-raise "File not found or is unreadable!" if !File.readable?(options[:packagelist])
+packagelist_file = InstallBuddy.get_option(:packagelist)
+raise "#{InstallBuddy.get_usage}. Type `install-buddy -h` for more details" if packagelist_file.nil?
+raise "File not found or is unreadable!" if !File.readable?(packagelist_file)
 
-packagelist_yaml = YAML::load_file(options[:packagelist])
-raise "Package-list file #{options[:packagelist]} must be YAML with 'packages' as root" unless valid_packagelist?(packagelist_yaml)
+packagelist_yaml = YAML::load_file(packagelist_file)
+raise "Package-list file #{packagelist_file} must be YAML with 'packages' as root" unless InstallBuddy.valid_packagelist?(packagelist_yaml)
 
 # Detect distro/distro family and pick appropriate installer
 si = Sysinfo.new
@@ -40,7 +22,7 @@ installer = DistroSupport.installer(si.distro_family, si.distro)
 # Let the installations begin!
 packagelist_yaml["packages"].each do |pkg|
   puts "Installing #{pkg} ..."
-  installer.install(pkg)
+  pkg_name = InstallBuddy.resolve_package(pkg, si.distro_family, si.distro)
+  installer.install(pkg_name)
 end
-
 
