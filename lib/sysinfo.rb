@@ -39,7 +39,7 @@ class Sysinfo
     # Concat all file content
     cat = ''
     Dir.glob("/etc/**/*-release").each do |f|
-      cat << File.read(f)
+      cat << File.read(f) if(File.file?(f))
     end
     cat.split(/\n/)
   end
