@@ -4,6 +4,7 @@ class DistroSupport
   # Distro/Distro families supported
   @@INSTALLERS = {
     :DEBIAN => Installer::Apt,
+    :UBUNTU => Installer::Apt,
     :CENTOS =>  Installer::Yum,
     :FEDORA =>  Installer::Dnf,
     :SOLUS => Installer::Eopkg,
