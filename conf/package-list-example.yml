@@ -2,7 +2,7 @@ packages:
   - vim
   - git
   - the_silver_searcher:
-    - alias: { Debian: "silversearcher-ag", Solus: "silver-searcher"}
+    - alias: { Debian: "silversearcher-ag", Ubuntu: "silversearcher-ag",  Solus: "silver-searcher"}
     - skip: [ "CentOS" ]
   - powertop
   - inxi
