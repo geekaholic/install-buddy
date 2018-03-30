@@ -22,8 +22,10 @@ Clone this repo. Create and/or modify a package-list YAML file. See [example](ht
 packages:
   - vim
   - git
+  - the_silver_searcher:
+    - alias: { Debian: "silversearcher-ag", Solus: "silver-searcher"}
+    - skip: [ "CentOS" ]
   - powertop
-  - inxi
 ```
 
 ```bash
@@ -34,6 +36,9 @@ Usage: sudo ./bin/install-buddy -f <package_list_file>
 sudo ./bin/install-buddy -f ./conf/package-list-example.yml
 ```
 
-## TODO (Coming soon!)
+## Package Alias Support
+Some packages might be named differently depending on distro.
+Eg: [the-silver-searcher](https://github.com/ggreer/the_silver_searcher), a faster alternative to `ack-grep` is named differently depending on distro. Look at following example above on how to write it.
 
-Package name aliases to support name changes across distros.
+## TODO(Coming soon!)
+Skipping installation of package for some distros (exclusion list)
