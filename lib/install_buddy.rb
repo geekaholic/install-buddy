@@ -28,9 +28,9 @@ class InstallBuddy
 
   # Check obj is a valid package-list yml
   def self.valid_packagelist?(obj)
-    obj.instance_of?(Hash) && obj["packages"]
+    obj.instance_of?(Hash) && !obj["packages"].nil?
   end
-   
+
   # Resolve the name of the package depending on distro
   def self.resolve_package(pkg, distro_family, distro = nil)
     return pkg if(pkg.is_a?(String))
