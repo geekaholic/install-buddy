@@ -8,7 +8,8 @@ class DistroSupport
     :CENTOS =>  Installer::Yum,
     :FEDORA =>  Installer::Dnf,
     :SOLUS => Installer::Eopkg,
-    :ARCHLINUX => Installer::Pacman
+    :ARCHLINUX => Installer::Pacman,
+    :MACOSX => Installer::Brew
   }.freeze
 
   def self.supported?(distro_family, distro = nil)

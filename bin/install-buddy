@@ -18,6 +18,7 @@ si = Sysinfo.new
 raise "Unsupported Linux distro family / distro #{si.distro_family}, #{si.distro}" unless DistroSupport.supported?(si.distro_family, si.distro)
 
 installer = DistroSupport.installer(si.distro_family, si.distro)
+raise "Installer #{installer} dependencies not met" unless installer.dependency_met?
 
 # Let the installations begin!
 packagelist_yaml["packages"].each do |pkg|

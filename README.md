@@ -1,10 +1,12 @@
 # Install Buddy
 
 ## What is it?
-Simple tool to automate installing  of a list of packages, on a freshely installed Linux system.
+Simple wrapper tool which relies on native package manager to automate installing a list of packages, on a freshely installed Linux/OSX system.
 
 ## Why?
-From time to time, I end up reinstalling or switching Linux distos and the initial setup to get things just right by installing my favorite packages and configuring it can take some time. I wanted a tool that can kickstart a fresh installation by automating the setup process so that I can be productive right away!
+From time to time, I end up reinstalling or switching Linux distos and the initial setup to get things just right the way it was can be time consuming. I wanted a simple tool that can bootstrap a fresh installation by automating the installation of additional packages, so that I can be productive right away!
+
+Checkout my [favorite list of packages](https://github.com/geekaholic/mydotfiles/blob/master/my-packages.yml).
 
 ## Installation Prerequisite
 * Supported distro
@@ -12,6 +14,7 @@ From time to time, I end up reinstalling or switching Linux distos and the initi
   - Fedora / CentOS
   - Solus
   - Arch
+  - Mac OSX (via [Homebrew](https://brew.sh))
 * Modern version of [Ruby](https://www.ruby-lang.org/en/documentation/installation/) is required to be installed.
 * Default Package Manager fully updated (e.g `apt-get update` on Debian like)
 

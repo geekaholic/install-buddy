@@ -9,6 +9,7 @@ class Sysinfo
   private
   def detect_distro
     out_arr = get_linux_release_data
+    out_arr = get_osx_release_data if out_arr.empty?
 
     # os_type_arr -> ["ID=ubuntu", "VERSION_ID=\"16.04\"", "DISTRIB_ID=Ubuntu"]
     os_type_arr = out_arr.grep(/ID/)
@@ -42,6 +43,13 @@ class Sysinfo
       cat << File.read(f) if(File.file?(f))
     end
     cat.split(/\n/)
+  end
+
+  # Detect if running OSX
+  def get_osx_release_data
+    kernel = `uname -s`
+    return ["ID=MacOSX"] if kernel.match(/^Darwin/)
+    nil
   end
 
   # cleanup and remove unwanted characters
