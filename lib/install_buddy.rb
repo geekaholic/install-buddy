@@ -36,15 +36,13 @@ class InstallBuddy
     return pkg if(pkg.is_a?(String))
 
     # If not a string then must be a Hash
-    raise "Not a valid package definition #{pkg}" unless (pkg.is_a?(Hash))
+    raise "Not a valid package definition #{pkg}" unless(valid_pkg?(pkg))
 
     pkg_name = pkg.keys.first
 
-    # Eg: aliases = {alias=>{"Debian"=>"silversearcher-ag", "Solus"=>"silver-searcher"}}
-    aliases = pkg[pkg_name].select do |attr|
-      attr.has_key?("alias") || attr.has_key?(:alias)
-    end.first
-    aliases = aliases["alias"]
+    aliases = extract_key(pkg, :alias)
+    # No alias key
+    return pkg_name if(aliases.nil? || !aliases.is_a?(Hash))
 
     # Match against distro_family or distro
     aliases.each do |k, v|
@@ -54,6 +52,33 @@ class InstallBuddy
 
     # No match so naively return pkg_name
     pkg_name
+  end
+
+  # Should we skip installation?
+  def self.skip_install?(pkg, distro_family, distro = nil)
+    return false unless(valid_pkg?(pkg))
+
+    skips = extract_key(pkg, :skip)
+    # No skips key
+    return false if(skips.nil? || !skips.is_a?(Array))
+
+    skips = skips.map(&:upcase)
+    skips.include?(distro_family.to_s) || skips.include?(distro.to_s)
+  end
+
+  private
+  def self.valid_pkg?(pkg)
+    (pkg.is_a?(Hash)) ? true : false
+  end
+
+  def self.extract_key(pkg, key)
+    pkg_name = pkg.keys.first
+    keys = pkg[pkg_name].select do |attr|
+      attr.has_key?(key.to_s) || attr.has_key?(key)
+    end.first
+
+    # No key found
+    (keys.nil?) ? nil : keys[key.to_s]
   end
 
 end

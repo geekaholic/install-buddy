@@ -43,5 +43,3 @@ sudo ./bin/install-buddy -f ./conf/package-list-example.yml
 Some packages might be named differently depending on distro.
 Eg: [the-silver-searcher](https://github.com/ggreer/the_silver_searcher), a faster alternative to `ack-grep` is named differently depending on distro. Look at following example above on how to write it.
 
-## TODO(Coming soon!)
-Skipping installation of package for some distros (exclusion list)

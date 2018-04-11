@@ -23,6 +23,13 @@ raise "Installer #{installer} dependencies not met" unless installer.dependency_
 # Let the installations begin!
 packagelist_yaml["packages"].each do |pkg|
   pkg_name = InstallBuddy.resolve_package(pkg, si.distro_family, si.distro)
+
+  # Check if we should skip install for this distro type
+  if(InstallBuddy.skip_install?(pkg, si.distro_family, si.distro))
+    puts "Skipping #{pkg_name} on #{si.distro} ..."
+    next
+  end
+
   puts "Installing #{pkg_name} ..."
   installer.install(pkg_name)
 end
