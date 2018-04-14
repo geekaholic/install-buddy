@@ -49,7 +49,7 @@ class Sysinfo
   def get_osx_release_data
     kernel = `uname -s`
     return ["ID=MacOSX"] if kernel.match(/^Darwin/)
-    nil
+    []
   end
 
   # cleanup and remove unwanted characters
