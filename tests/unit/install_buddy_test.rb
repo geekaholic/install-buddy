@@ -7,6 +7,7 @@ def packagelist_hash
     packages:
       - the_silver_searcher:
         - alias: { Debian: "silversearcher-ag", Solus: "silver-searcher"}
+        - skip: [ "CentOS", "Fedora" ]
   YML
   YAML.load(yaml_good)
 end
@@ -64,5 +65,12 @@ class InstallBuddyTest < Minitest::Test
     pkg_name = InstallBuddy.resolve_package(pkg, :XYZ, :ABC)
     assert_instance_of String, pkg_name
     assert_equal pkg_name, "the_silver_searcher"
+  end
+
+  # Should skip installation on a distro which should be skipped
+  def test_skip_install_feature
+    pkg_hash = packagelist_hash
+    pkg = pkg_hash["packages"].first
+    assert_equal InstallBuddy.skip_install?(pkg, :CENTOS), true
   end
 end
