@@ -6,6 +6,11 @@ class Sysinfo
     detect_distro
   end
 
+  def self.term_supports_color?
+    colors = `tput colors`.chomp
+    colors.to_i > 8
+  end
+
   private
   def detect_distro
     out_arr = get_linux_release_data

@@ -5,17 +5,22 @@ require_relative '../lib/install_buddy'
 require_relative '../lib/sysinfo'
 require_relative '../lib/distro_support'
 
+def colorize(text, color = :green)
+  colors = {red: '31', green: '32', yellow: '33'}
+  (Sysinfo::term_supports_color?) ? "\e[#{colors[color]}m#{text}\e[0m" : text
+end
+
 # Check for valid packagelist file
 packagelist_file = InstallBuddy.get_option(:packagelist)
-raise "#{InstallBuddy.get_usage}. Type `install-buddy -h` for more details" if packagelist_file.nil?
-raise "File not found or is unreadable!" if !File.readable?(packagelist_file)
+raise colorize("#{InstallBuddy.get_usage}. Type `install-buddy -h` for more details", :yellow) if packagelist_file.nil?
+raise colorize("File not found or is unreadable!", :red) if !File.readable?(packagelist_file)
 
 packagelist_yaml = YAML::load_file(packagelist_file)
-raise "Package-list file #{packagelist_file} must be YAML with 'packages' as root" unless InstallBuddy.valid_packagelist?(packagelist_yaml)
+raise colorize("Package-list file #{packagelist_file} must be YAML with 'packages' as root", :red) unless InstallBuddy.valid_packagelist?(packagelist_yaml)
 
 # Detect distro/distro family and pick appropriate installer
 si = Sysinfo.new
-raise "Unsupported Linux distro family / distro #{si.distro_family}, #{si.distro}" unless DistroSupport.supported?(si.distro_family, si.distro)
+raise colorize("Unsupported Linux distro family / distro #{si.distro_family}, #{si.distro}", :red) unless DistroSupport.supported?(si.distro_family, si.distro)
 
 installer = DistroSupport.installer(si.distro_family, si.distro)
 raise "Installer #{installer} dependencies not met" unless installer.dependency_met?
@@ -26,11 +31,10 @@ packagelist_yaml["packages"].each do |pkg|
 
   # Check if we should skip install for this distro type
   if(InstallBuddy.skip_install?(pkg, si.distro_family, si.distro))
-    puts "Skipping #{pkg_name} on #{si.distro} ..."
+    puts colorize("Skipping #{pkg_name} on #{si.distro} ...", :yellow)
     next
   end
 
-  puts "Installing #{pkg_name} ..."
+  puts colorize("Installing #{pkg_name} ...")
   installer.install(pkg_name)
 end
-
