@@ -28,6 +28,8 @@ packages:
   - the_silver_searcher:
     - alias: { Debian: "silversearcher-ag", Solus: "silver-searcher"}
     - skip: [ "CentOS" ]
+  - snapd:
+    - only: [ "Ubuntu" ]
   - powertop
 ```
 
@@ -43,3 +45,12 @@ sudo ./bin/install-buddy -f ./conf/package-list-example.yml
 Some packages might be named differently depending on distro.
 Eg: [the-silver-searcher](https://github.com/ggreer/the_silver_searcher), a faster alternative to `ack-grep` is named differently depending on distro. Look at following example above on how to write it.
 
+## Skip package installation for some distros
+Some times you may want to skip installing a package for a specific distro or distro family. For example you might want to skip `MacOSX` when installing `docker` package because on OSX it's not installed via homebrew.
+
+Note: This feature can not be combined with the `-only` feature.
+
+## Installing packages "Only" on some distros
+Some times you might want to restrict installation of a package to `only` one distro name or family. This works similar to the `-skip` feature except you specify the distros to only install on.
+
+Note: This feature can not be combined with the `-skip` feature.

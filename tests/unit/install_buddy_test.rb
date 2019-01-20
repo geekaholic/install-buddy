@@ -8,6 +8,8 @@ def packagelist_hash
       - the_silver_searcher:
         - alias: { Debian: "silversearcher-ag", Solus: "silver-searcher"}
         - skip: [ "CentOS", "Fedora" ]
+      - snapd:
+        - only: [ "Ubuntu" ]
   YML
   YAML.load(yaml_good)
 end
@@ -72,5 +74,13 @@ class InstallBuddyTest < Minitest::Test
     pkg_hash = packagelist_hash
     pkg = pkg_hash["packages"].first
     assert_equal InstallBuddy.skip_install?(pkg, :CENTOS), true
+  end
+
+  # Should skip installation when only key present and does not match
+  def test_only_install_feature
+    pkg_hash = packagelist_hash
+    pkg = pkg_hash["packages"].last
+    assert_equal InstallBuddy.skip_install?(pkg, :DEBIAN), true
+    assert_equal InstallBuddy.skip_install?(pkg, :UBUNTU), false
   end
 end

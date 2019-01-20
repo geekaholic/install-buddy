@@ -58,8 +58,13 @@ class InstallBuddy
   def self.skip_install?(pkg, distro_family, distro = nil)
     return false unless(valid_pkg?(pkg))
 
+    # Skip intallation if :only key present and distro doesn't match
+    if key_present?(pkg, :only)
+      return only_install?(pkg, distro_family, distro) ? false : true
+    end
+
     skips = extract_key(pkg, :skip)
-    # No skips key
+    # No skip key
     return false if(skips.nil? || !skips.is_a?(Array))
 
     skips = skips.map(&:upcase)
@@ -79,6 +84,22 @@ class InstallBuddy
 
     # No key found
     (keys.nil?) ? nil : keys[key.to_s]
+  end
+
+  def self.key_present?(pkg, key)
+    !!extract_key(pkg, key)
+  end
+
+  # Should we only install for this distro_family
+  def self.only_install?(pkg, distro_family, distro = nil)
+    return false unless(valid_pkg?(pkg))
+
+    onlys = extract_key(pkg, :only)
+    # No only key
+    return false if(onlys.nil? || !onlys.is_a?(Array))
+
+    onlys = onlys.map(&:upcase)
+    onlys.include?(distro_family.to_s) || onlys.include?(distro.to_s)
   end
 
 end
