@@ -30,7 +30,7 @@ packagelist_yaml["packages"].each do |pkg|
   pkg_name = InstallBuddy.resolve_package(pkg, si.distro_family, si.distro)
 
   # Check if we should skip install for this distro type
-  if(InstallBuddy.skip_install?(pkg, si.distro_family, si.distro))
+  if(InstallBuddy.skip_install?(pkg, si.distro_family, si.distro, si.os_type))
     puts colorize("Skipping #{pkg_name} on #{si.distro} ...", :yellow)
     next
   end

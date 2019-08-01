@@ -55,7 +55,7 @@ class InstallBuddy
   end
 
   # Should we skip installation?
-  def self.skip_install?(pkg, distro_family, distro = nil)
+  def self.skip_install?(pkg, distro_family, distro = nil, os_type = nil)
     return false unless(valid_pkg?(pkg))
 
     # Skip intallation if :only key present and distro doesn't match
@@ -68,7 +68,7 @@ class InstallBuddy
     return false if(skips.nil? || !skips.is_a?(Array))
 
     skips = skips.map(&:upcase)
-    skips.include?(distro_family.to_s) || skips.include?(distro.to_s)
+    skips.include?(distro_family.to_s) || skips.include?(distro.to_s) || skips.include?(os_type.to_s)
   end
 
   private
