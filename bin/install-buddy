@@ -12,20 +12,24 @@ end
 
 # Check for valid packagelist file
 packagelist_file = InstallBuddy.get_option(:packagelist)
-raise colorize("#{InstallBuddy.get_usage}. Type `install-buddy -h` for more details", :yellow) if packagelist_file.nil?
-raise colorize("File not found or is unreadable!", :red) if !File.readable?(packagelist_file)
+abort(colorize("#{InstallBuddy.get_usage}. Type `install-buddy -h` for more details", :yellow)) if packagelist_file.nil?
+
+# Check if running as root
+abort(colorize('install-buddy must be run as root!', :red)) unless `id -u`.chomp == '0'
+
+abort(colorize("File not found or is unreadable!", :red)) if !File.readable?(packagelist_file)
 
 packagelist_yaml = YAML::load_file(packagelist_file)
-raise colorize("Package-list file #{packagelist_file} must be YAML with 'packages' as root", :red) unless InstallBuddy.valid_packagelist?(packagelist_yaml)
+abort(colorize("Package-list file #{packagelist_file} must be YAML with 'packages' as root", :red)) unless InstallBuddy.valid_packagelist?(packagelist_yaml)
 
 # Detect distro/distro family and pick appropriate installer
 si = Sysinfo.new
-raise colorize("Unsupported Linux distro family / distro #{si.distro_family}, #{si.distro}", :red) unless DistroSupport.supported?(si.distro_family, si.distro)
+abort(colorize("Unsupported Linux distro family / distro #{si.distro_family}, #{si.distro}", :red)) unless DistroSupport.supported?(si.distro_family, si.distro)
 
 installer = DistroSupport.installer(si.distro_family, si.distro)
-raise "Installer #{installer} dependencies not met" unless installer.dependency_met?
+abort("Installer #{installer} dependencies not met") unless installer.dependency_met?
 
-# Let the installations begin!
+#Let the installations begin!
 packagelist_yaml["packages"].each do |pkg|
   pkg_name = InstallBuddy.resolve_package(pkg, si.distro_family, si.distro)
 
