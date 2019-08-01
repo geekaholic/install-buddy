@@ -76,6 +76,18 @@ class InstallBuddyTest < Minitest::Test
     assert_equal InstallBuddy.skip_install?(pkg, :CENTOS), true
   end
 
+  # Should skip Linux distro when in skip list even if distro's name or family does not match the word Linux
+  def test_skip_linux_with_linux_distro
+    yml = <<~YML
+      packages:
+        - macvim:
+          - skip: [ "Linux" ]
+    YML
+    pkg_hash = YAML.load(yml)
+    pkg = pkg_hash["packages"].first
+    assert_equal InstallBuddy.skip_install?(pkg, :UBUNTU, :ELEMENTARY, :LINUX), true
+  end
+
   # Should skip installation when only key present and does not match
   def test_only_install_feature
     pkg_hash = packagelist_hash

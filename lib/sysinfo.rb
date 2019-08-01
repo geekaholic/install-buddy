@@ -1,9 +1,10 @@
 class Sysinfo
-  attr_reader :distro, :distro_family
+  attr_reader :distro, :distro_family, :os_type
 
   def initialize
-    @distro = @distro_family = nil
+    @distro = @distro_family = @os_type = nil
     detect_distro
+    detect_os
   end
 
   def self.term_supports_color?
@@ -17,17 +18,17 @@ class Sysinfo
     out_arr = get_osx_release_data if out_arr.empty?
 
     # os_type_arr -> ["ID=ubuntu", "VERSION_ID=\"16.04\"", "DISTRIB_ID=Ubuntu"]
-    os_type_arr = out_arr.grep(/ID/)
-    if(os_type_arr.any?)
+    distro_type_arr = out_arr.grep(/ID/)
+    if(distro_type_arr.any?)
       # Get distro name from ID or DISTRIB_ID and convert to uppercase
       begin
-        @distro = os_type_arr.grep(/^ID=|^DISTRIB_ID=/).compact.first.split('=')[1]
+        @distro = distro_type_arr.grep(/^ID=|^DISTRIB_ID=/).compact.first.split('=')[1]
         @distro = cleanup_distro_name(@distro).upcase.to_sym
       rescue
         @distro = :UNKNOWN
       end
       begin
-        @distro_family = os_type_arr.grep(/ID_LIKE=/).first.split('=')[1]
+        @distro_family = distro_type_arr.grep(/ID_LIKE=/).first.split('=')[1]
         @distro_family = cleanup_distro_name(@distro_family).upcase.to_sym
       rescue
         # Defaults to same as @distro or UNKNOWN
@@ -38,6 +39,18 @@ class Sysinfo
       @distro_family = :UNKNOWN
     end
     nil
+  end
+
+
+  def detect_os
+    case ENV['OSTYPE']
+    when 'linux-gnu'
+      @os_type = :LINUX
+    when 'darwin'
+      @os_type = :OSX
+    else
+      @os_type = :UNKNOWN
+    end
   end
 
   # Return /etc/{os-release, lsb-release} or similar
