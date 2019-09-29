@@ -9,6 +9,7 @@ class DistroSupport
     :FEDORA =>  Installer::Dnf,
     :SOLUS => Installer::Eopkg,
     :ARCHLINUX => Installer::Pacman,
+    :ALPINE => Installer::Alpine,
     :MACOSX => Installer::Brew
   }.freeze
 

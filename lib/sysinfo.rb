@@ -8,7 +8,7 @@ class Sysinfo
   end
 
   def self.term_supports_color?
-    colors = `tput colors`.chomp
+    colors = `env tput colors 2>/dev/null`.chomp
     colors.to_i > 8
   end
 
@@ -44,7 +44,7 @@ class Sysinfo
 
   def detect_os
     case ENV['OSTYPE']
-    when 'linux-gnu'
+    when /linux\-/
       @os_type = :LINUX
     when 'darwin'
       @os_type = :OSX

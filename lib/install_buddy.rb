@@ -68,7 +68,7 @@ class InstallBuddy
     return false if(skips.nil? || !skips.is_a?(Array))
 
     skips = skips.map(&:upcase)
-    skips.include?(distro_family.to_s) || skips.include?(distro.to_s) || skips.include?(os_type.to_s)
+    skips.include?(distro_family.to_s) || skips.include?(distro.to_s) || skips.include?(os_type.to_s) || os_type == :UNKNOWN
   end
 
   private
