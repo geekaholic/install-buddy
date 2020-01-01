@@ -10,6 +10,7 @@ class DistroSupport
     :SOLUS => Installer::Eopkg,
     :ARCHLINUX => Installer::Pacman,
     :ALPINE => Installer::Alpine,
+    :GENTOO => Installer::Gentoo,
     :MACOSX => Installer::Brew
   }.freeze
 
