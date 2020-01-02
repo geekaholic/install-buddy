@@ -14,6 +14,7 @@ Checkout my [favorite list of packages](https://github.com/geekaholic/mydotfiles
   - Fedora / CentOS
   - Solus
   - Arch
+  - Gentoo
   - Mac OSX (via [Homebrew](https://brew.sh))
 * Modern version of [Ruby](https://www.ruby-lang.org/en/documentation/installation/) is required to be installed.
 * Default Package Manager fully updated (e.g `apt-get update` on Debian like)
