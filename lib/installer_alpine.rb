@@ -10,8 +10,13 @@ module Installer
 
     private
     def self.install_package(package = '')
-      puts "Installing #{package} via apk..."
-      system("apk add #{package}")
+      puts Utils::colorize("Installing #{package} via apk...")
+      cmd = "apk add #{package}"
+      if dryrun
+        puts Utils::colorize(cmd, :blue)
+      else
+        system(cmd)
+      end
     end
   end
 end

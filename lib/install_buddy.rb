@@ -1,10 +1,14 @@
 class InstallBuddy
   @@OPTIONS = nil
-  @@USAGE_STR = "Usage: install-buddy -f <package-list_file>"
+  @@USAGE_STR = "Usage: install-buddy -f <package-list_file> [--dry-run]"
 
   # Read command line options
   def self.parse_options
-    @@OPTIONS ||= { packagelist: nil }
+    @@OPTIONS ||= {
+      packagelist: nil,
+      debug: false,
+      dryrun: false
+    }
 
     OptionParser.new do |opts|
       # Banner used to show --help or -h
@@ -13,6 +17,12 @@ class InstallBuddy
       opts.separator "Options:"
       opts.on("-f", "--file FILE", "Path to package-list yaml file") do |f|
         @@OPTIONS[:packagelist] = f
+      end
+      opts.on("--debug", "Prints debug info for reporting bugs") do
+        @@OPTIONS[:debug] = true
+      end
+      opts.on("--dry-run", "Pretends to install packages") do
+        @@OPTIONS[:dryrun] = true
       end
     end.parse!
   end
@@ -68,7 +78,10 @@ class InstallBuddy
     return false if(skips.nil? || !skips.is_a?(Array))
 
     skips = skips.map(&:upcase)
-    skips.include?(distro_family.to_s) || skips.include?(distro.to_s) || skips.include?(os_type.to_s) || os_type == :UNKNOWN
+    skips.include?(distro_family.to_s) || \
+      skips.include?(distro.to_s) || \
+      skips.include?(os_type.to_s) || \
+      (distro_family == :UNKNOWN && distro == :UNKNOWN && os_type == :UNKNOWN)
   end
 
   private

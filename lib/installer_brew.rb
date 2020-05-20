@@ -16,8 +16,13 @@ module Installer
 
     private
     def self.install_package(package = '')
-      puts "Installing #{package} via brew..."
-      system("brew install #{package}")
+      puts Utils::colorize("Installing #{package} via brew...")
+      cmd = "brew install #{package}"
+      if dryrun
+        puts Utils::colorize(cmd, :blue)
+      else
+        system(cmd)
+      end
     end
   end
 end
