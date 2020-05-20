@@ -43,11 +43,13 @@ class Sysinfo
 
 
   def detect_os
-    case ENV['OSTYPE']
+    case RUBY_PLATFORM
     when /linux\-/
       @os_type = :LINUX
-    when 'darwin'
+    when /darwin/
       @os_type = :OSX
+    when /cygwin|mswin|mingw|bccwin|wince|emx/
+      @os_type = :WINDOWS
     else
       @os_type = :UNKNOWN
     end
