@@ -10,8 +10,13 @@ module Installer
 
     private
     def self.install_package(package = '')
-      puts "Installing #{package} via portage..."
-      system("emerge --ask n #{package}")
+      puts Utils::colorize("Installing #{package} via portage...")
+      cmd = "emerge --ask n #{package}"
+      if dryrun
+        puts Utils::colorize(cmd, :blue)
+      else
+        system(cmd)
+      end
     end
   end
 end

@@ -10,8 +10,13 @@ module Installer
 
     private
     def self.install_package(package = '')
-      puts "Installing #{package} via pacman..."
-      system("pacman -Sy --noconfirm #{package}")
+      puts Utils::colorize("Installing #{package} via pacman...")
+      cmd = "pacman -Sy --noconfirm #{package}"
+      if dryrun
+        puts Utils::colorize(cmd, :blue)
+      else
+        system(cmd)
+      end
     end
   end
 end

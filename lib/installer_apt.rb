@@ -9,9 +9,14 @@ module Installer
     end
 
     private
-    def self.install_package(package = '')
-      puts "Installing #{package} via apt..."
-      system("apt-get install -y #{package}")
+    def self.install_package(package = '', dryrun = false)
+      puts Utils::colorize("Installing #{package} via apt...")
+      cmd = "apt-get install -y #{package}"
+      if dryrun
+        puts Utils::colorize(cmd, :blue)
+      else
+        system(cmd)
+      end
     end
   end
 end

@@ -1,10 +1,12 @@
+require_relative 'utils'
+
 module Installer
   module Installable
-    def install(package = '')
-      install_package(package)
+    def install(package = '', dryrun = false)
+      install_package(package, dryrun)
     end
 
-    def install_package(package)
+    def install_package(package, dryrun)
       raise "Not implemented"
     end
 

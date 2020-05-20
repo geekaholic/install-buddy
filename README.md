@@ -10,11 +10,12 @@ Checkout my [favorite list of packages](https://github.com/geekaholic/mydotfiles
 
 ## Installation Prerequisite
 * Supported distro
+  - Alpine
+  - Arch
   - Debian & flavors(Ubuntu, Mint, ElementaryOS etc.)
   - Fedora / CentOS
-  - Solus
-  - Arch
   - Gentoo
+  - Solus
   - Mac OSX (via [Homebrew](https://brew.sh))
 * Modern version of [Ruby](https://www.ruby-lang.org/en/documentation/installation/) is required to be installed.
 * Default Package Manager fully updated (e.g `apt-get update` on Debian like)
@@ -38,7 +39,10 @@ packages:
 Usage: sudo ./bin/install-buddy -f <package_list_file>
 ```
 
+Add `--dry-run` to pretend to install packages without actually installing them.
+
 ```bash
+sudo ./bin/install-buddy -f ./conf/package-list-example.yml --dry-run
 sudo ./bin/install-buddy -f ./conf/package-list-example.yml
 ```
 
