@@ -9,7 +9,7 @@ module Installer
     end
 
     private
-    def self.install_package(package = '')
+    def self.install_package(package = '', dryrun = false)
       puts Utils::colorize("Installing #{package} via pacman...")
       cmd = "pacman -Sy --noconfirm #{package}"
       if dryrun

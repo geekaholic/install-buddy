@@ -9,6 +9,7 @@ class DistroSupport
     :FEDORA =>  Installer::Dnf,
     :SOLUS => Installer::Eopkg,
     :ARCHLINUX => Installer::Pacman,
+    :MANJARO => Installer::Pacman,
     :ALPINE => Installer::Alpine,
     :GENTOO => Installer::Gentoo,
     :MACOSX => Installer::Brew
