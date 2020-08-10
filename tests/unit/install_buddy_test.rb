@@ -88,8 +88,8 @@ class InstallBuddyTest < Minitest::Test
     assert_equal InstallBuddy.skip_install?(pkg, :UBUNTU, :ELEMENTARY, :LINUX), true
   end
 
-  # Should skip install if os_type is unknwon
-  def test_skip_with_unknown_os_type
+  # Should skip install if all unknwon
+  def test_skip_with_all_unknown
     yml = <<~YML
       packages:
         - macvim:
@@ -97,7 +97,7 @@ class InstallBuddyTest < Minitest::Test
     YML
     pkg_hash = YAML.load(yml)
     pkg = pkg_hash["packages"].first
-    assert_equal InstallBuddy.skip_install?(pkg, :FOO, :FOO, :UNKNOWN), true
+    assert_equal InstallBuddy.skip_install?(pkg, :UNKNOWN, :UNKNOWN, :UNKNOWN), true
   end
 
   # Should skip installation when only key present and does not match

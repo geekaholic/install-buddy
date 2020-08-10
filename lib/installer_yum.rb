@@ -4,19 +4,10 @@ module Installer
   class Yum
     extend Installable
 
-    def self.to_s
-      "Yum at work"
-    end
-
     private
-    def self.install_package(package = '')
-      puts Utils::colorize("Installing #{package} via yum...")
+    def self.install_package(package = '', dryrun = false)
       cmd = "yum install -y #{package}"
-      if dryrun
-        puts Utils::colorize(cmd, :blue)
-      else
-        system(cmd)
-      end
+      run_install(cmd, package, dryrun)
     end
   end
 end

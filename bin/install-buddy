@@ -5,6 +5,7 @@ require_relative '../lib/install_buddy'
 require_relative '../lib/sysinfo'
 require_relative '../lib/distro_support'
 require_relative '../lib/mixin/utils'
+require_relative '../lib/remote' if InstallBuddy.get_option(:remote)
 
 puts Utils::colorize("Found --debug so will print debug info", :red) if InstallBuddy.get_option(:debug)
 puts Utils::colorize("Found --dry-run so will pretend to install packages", :yellow) if InstallBuddy.get_option(:dryrun)
@@ -14,7 +15,7 @@ packagelist_file = InstallBuddy.get_option(:packagelist)
 abort(Utils::colorize("#{InstallBuddy.get_usage}. Type `install-buddy -h` for more details", :yellow)) if packagelist_file.nil?
 
 # Check if running as root
-abort(Utils::colorize('install-buddy must be run as root!', :red)) unless `id -u`.chomp == '0'
+abort(Utils::colorize('install-buddy must be run as root!', :red)) unless InstallBuddy.get_option(:remote) || `id -u`.chomp == '0'
 
 abort(Utils::colorize("File not found or is unreadable!", :red)) if !File.readable?(packagelist_file)
 
@@ -40,3 +41,6 @@ packagelist_yaml["packages"].each do |pkg|
 
   installer.install(pkg_name, InstallBuddy.get_option(:dryrun))
 end
+
+# Install queued packages when it's done over remote
+installer.remote_install if InstallBuddy.get_option(:remote) && !InstallBuddy.get_option(:dryrun)

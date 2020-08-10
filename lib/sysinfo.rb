@@ -43,6 +43,8 @@ class Sysinfo
 
 
   def detect_os
+    return detect_os_remote if InstallBuddy.get_option(:remote)
+
     case RUBY_PLATFORM
     when /linux\-/
       @os_type = :LINUX
@@ -55,19 +57,34 @@ class Sysinfo
     end
   end
 
+  def detect_os_remote
+    #FIXME: Only Linux supported
+    @os_type = Remote.exec("uname -o").match(/Linux/i) ? :LINUX : :UNKNOWN
+  end
+
   # Return /etc/{os-release, lsb-release} or similar
   def get_linux_release_data
     # Concat all file content
     cat = ''
-    Dir.glob("/etc/**/*-release").each do |f|
-      cat << File.read(f) if(File.file?(f))
+    if InstallBuddy.get_option(:remote)
+      cat = Remote.exec("cat /etc/os-release")
+    else
+      Dir.glob("/etc/**/*-release").each do |f|
+        cat << File.read(f) if(File.file?(f))
+      end
     end
+
     cat.split(/\n/)
   end
 
   # Detect if running OSX
   def get_osx_release_data
-    kernel = `uname -s`
+    cmd = "uname -s"
+    kernel = if InstallBuddy.get_option(:remote)
+              Remote.exec(cmd)
+             else
+              `#{cmd}`
+             end
     return ["ID=MacOSX"] if kernel.match(/^Darwin/)
     []
   end
