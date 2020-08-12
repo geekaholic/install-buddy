@@ -15,14 +15,9 @@ module Installer
     end
 
     private
-    def self.install_package(package = '')
-      puts Utils::colorize("Installing #{package} via brew...")
+    def self.install_package(package = '', dryrun = false)
       cmd = "brew install #{package}"
-      if dryrun
-        puts Utils::colorize(cmd, :blue)
-      else
-        system(cmd)
-      end
+      run_install(cmd, package, dryrun)
     end
   end
 end

@@ -1,8 +1,8 @@
 # Running tests
 
-From project director
+Make sure you have [minitest](https://github.com/seattlerb/minitest) installed by running `bundle install` from the project directory.
 
-To run unit tests.
+To run unit tests, from project directory:
 
 ```
 $ rake test

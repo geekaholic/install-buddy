@@ -6,6 +6,7 @@ class InstallBuddy
   def self.parse_options
     @@OPTIONS ||= {
       packagelist: nil,
+      remote: nil,
       debug: false,
       dryrun: false
     }
@@ -17,6 +18,9 @@ class InstallBuddy
       opts.separator "Options:"
       opts.on("-f", "--file FILE", "Path to package-list yaml file") do |f|
         @@OPTIONS[:packagelist] = f
+      end
+      opts.on("-r", "--remote <ip_address>", "Remote SSH ip address configured with password-less login into root") do |ip|
+        @@OPTIONS[:remote] = ip
       end
       opts.on("--debug", "Prints debug info for reporting bugs") do
         @@OPTIONS[:debug] = true
