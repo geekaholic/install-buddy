@@ -8,7 +8,8 @@ class InstallBuddy
       packagelist: nil,
       remote: nil,
       debug: false,
-      dryrun: false
+      dryrun: false,
+      noroot: false
     }
 
     OptionParser.new do |opts|
@@ -28,7 +29,12 @@ class InstallBuddy
       opts.on("--dry-run", "Pretends to install packages") do
         @@OPTIONS[:dryrun] = true
       end
+      opts.on("--no-root", "Don't check if running as root (needed for homebrew)") do
+        @@OPTIONS[:noroot] = true
+      end
     end.parse!
+    rescue => e
+      abort("Bad option entered! Check your arguments.")
   end
 
   def self.get_option(key)
