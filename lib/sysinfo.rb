@@ -8,7 +8,7 @@ class Sysinfo
   end
 
   def self.term_supports_color?
-    @colors ||= `env tput colors 2>/dev/null`.chomp
+    @colors ||= TTY::Color.mode
     @colors.to_i > 8
   end
 

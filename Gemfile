@@ -4,9 +4,9 @@ source 'https://rubygems.org'
 gem 'net-ssh'
 gem 'ed25519'
 gem 'bcrypt_pbkdf'
+gem 'tty-color'
 
 group :development do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'minitest'
 end
-
