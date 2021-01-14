@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'optparse'
 require 'yaml'
+require 'tty-color'
 require_relative '../lib/install_buddy'
 require_relative '../lib/sysinfo'
 require_relative '../lib/distro_support'
@@ -15,7 +16,7 @@ packagelist_file = InstallBuddy.get_option(:packagelist)
 abort(Utils::colorize("#{InstallBuddy.get_usage}. Type `install-buddy -h` for more details", :yellow)) if packagelist_file.nil?
 
 # Check if running as root
-abort(Utils::colorize('install-buddy must be run as root!', :red)) unless InstallBuddy.get_option(:remote) || `id -u`.chomp == '0'
+abort(Utils::colorize('install-buddy must be run as root!', :red)) unless InstallBuddy.get_option(:remote) || Process.uid == '0'
 
 abort(Utils::colorize("File not found or is unreadable!", :red)) if !File.readable?(packagelist_file)
 
