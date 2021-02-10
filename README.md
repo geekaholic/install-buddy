@@ -46,6 +46,12 @@ sudo ./bin/install-buddy -f ./conf/package-list-example.yml --dry-run
 sudo ./bin/install-buddy -f ./conf/package-list-example.yml
 ```
 
+Add `--no-root` to try force installation as non root and stop it from complaining.
+
+```bash
+sudo ./bin/install-buddy -f ./conf/package-list-example.yml --no-root
+```
+
 ## Package Alias Support
 Some packages might be named differently depending on distro.
 Eg: [the-silver-searcher](https://github.com/ggreer/the_silver_searcher), a faster alternative to `ack-grep` is named differently depending on distro. Look at the following example above on how to write it.
