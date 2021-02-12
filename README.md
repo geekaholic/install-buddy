@@ -46,10 +46,10 @@ sudo ./bin/install-buddy -f ./conf/package-list-example.yml --dry-run
 sudo ./bin/install-buddy -f ./conf/package-list-example.yml
 ```
 
-Add `--no-root` to try force installation as non root and stop it from complaining.
+Add `--no-root` to try force installation as non root and stop it from complaining (e.g: with homebrew)
 
 ```bash
-sudo ./bin/install-buddy -f ./conf/package-list-example.yml --no-root
+./bin/install-buddy -f ./conf/package-list-example.yml --no-root
 ```
 
 ## Package Alias Support
