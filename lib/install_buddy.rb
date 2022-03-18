@@ -74,6 +74,13 @@ class InstallBuddy
     pkg_name
   end
 
+  # Resolve shell commands and return array
+  def self.resolve_shell(pkg)
+    return nil if(pkg.is_a?(String))
+
+    extract_key(pkg, :shell)
+  end
+
   # Should we skip installation?
   def self.skip_install?(pkg, distro_family, distro = nil, os_type = nil)
     return false unless(valid_pkg?(pkg))

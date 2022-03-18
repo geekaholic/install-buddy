@@ -10,11 +10,11 @@ module Installer
       "#{installer.capitalize} at work"
     end
 
-    def install(package = '', dryrun = false)
-      install_package(package, dryrun)
+    def install(package = '', dryrun = false, args = nil)
+      install_package(package, dryrun, args)
     end
 
-    def install_package(package, dryrun)
+    def install_package(package, dryrun, args = nil)
       raise "Not implemented"
     end
 

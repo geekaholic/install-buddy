@@ -17,6 +17,7 @@ Check out my [favorite list of packages](https://github.com/geekaholic/mydotfile
   - Gentoo
   - Solus
   - Mac OSX (via [Homebrew](https://brew.sh))
+  - Installing via a shell script (experimental) 
 * Modern version of [Ruby](https://www.ruby-lang.org/en/documentation/installation/) is required to be installed.
 * Default Package Manager fully updated (e.g `apt-get update` on Debian like)
 
@@ -33,6 +34,8 @@ packages:
   - snapd:
     - only: [ "Ubuntu" ]
   - powertop
+  - brew:
+    - shell: [ "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"" ]
 ```
 
 ```bash
