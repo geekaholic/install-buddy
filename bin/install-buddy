@@ -15,7 +15,7 @@ packagelist_file = InstallBuddy.get_option(:packagelist)
 abort(Utils::colorize("#{InstallBuddy.get_usage}. Type `install-buddy -h` for more details", :yellow)) if packagelist_file.nil?
 
 # Check if running as root
-abort(Utils::colorize('install-buddy must be run as root!', :red)) unless InstallBuddy.get_option(:remote) || `id -u`.chomp == '0' || InstallBuddy.get_option(:noroot)
+abort(Utils::colorize('By default, install-buddy should be run as root (or with sudo). To run as non root pass in the --no-root option', :red)) unless InstallBuddy.get_option(:remote) || `id -u`.chomp == '0' || InstallBuddy.get_option(:noroot)
 
 abort(Utils::colorize("File not found or is unreadable!", :red)) if !File.readable?(packagelist_file)
 
@@ -33,13 +33,17 @@ abort("Installer #{installer} dependencies not met") unless installer.dependency
 packagelist_yaml["packages"].each do |pkg|
   pkg_name = InstallBuddy.resolve_package(pkg, si.distro_family, si.distro)
 
+  # Check if this pkg should use shell cmds to execute
+  args = InstallBuddy.resolve_shell(pkg)
+  installer = DistroSupport.shell_installer if args
+
   # Check if we should skip install for this distro type
   if(InstallBuddy.skip_install?(pkg, si.distro_family, si.distro, si.os_type))
     puts Utils::colorize("Skipping #{pkg_name} on #{si.distro} ...", :yellow)
     next
   end
 
-  installer.install(pkg_name, InstallBuddy.get_option(:dryrun))
+  installer.install(pkg_name, InstallBuddy.get_option(:dryrun), args)
 end
 
 # Install queued packages when it's done over remote

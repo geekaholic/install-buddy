@@ -24,4 +24,8 @@ class DistroSupport
     @@INSTALLERS[distro_family.upcase.to_sym] ||
       (distro && @@INSTALLERS[distro.upcase.to_sym])
   end
+
+  def self.shell_installer
+    Installer::Shell
+  end
 end
