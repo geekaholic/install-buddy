@@ -92,9 +92,10 @@ class Sysinfo
   # cleanup and remove unwanted characters
   def cleanup_distro_name(word)
     # manjaro,arch
-    word.gsub!(/["']/,'').gsub!(/,.*+/, '')
+    word.gsub!(/["']/,'')
+    word.gsub!(/,.*+/, '')
     # ubuntu debian
-    word.split(' ')[1]
+    word.gsub(/ [a-zA-Z]+/, '')
   end
 
 end
